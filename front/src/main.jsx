@@ -6,13 +6,16 @@ import 'bootstrap/dist/js/bootstrap.bundle.js'
 import App from './App.jsx'
 import './index.css'
 import { ThemeProvider } from './contents/themeContext.jsx'
+import { AuthContextProvider } from './contents/authContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
+      <AuthContextProvider>
         <BrowserRouter>
           <App />
-      </BrowserRouter> 
+        </BrowserRouter> 
+      </AuthContextProvider>
     </ThemeProvider>
   </StrictMode>,
 )

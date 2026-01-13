@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { registerUser } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
@@ -21,16 +21,25 @@ const Register = () => {
   const processRegistration = (event) => {
     event.preventDefault();
 
+    console.log('Sending userData:', userInfo);
     registerUser(userInfo)
       .then(() => {
         setErrors({});
         navigate('/login')
       })
       .catch(errorResponse => {
-        if (errorResponse.status == 422) {
+        console.log('Registration error:', errorResponse);
+        if (errorResponse.status === 400) {
+          const data = errorResponse.response?.data;
+          if (data?.message) {
+            setErrors({ email: { message: data.message } });
+          } else if (data?.errors) {
+            setErrors(data.errors);
+          }
+        } else if (errorResponse.status === 422) {
           setErrors({ email: { message: 'Email already in use' } });
         } else {
-          setErrors(errorResponse.response.data.errors);
+          setErrors(errorResponse.response?.data?.errors || {});
         }
       });
   };

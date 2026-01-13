@@ -2,7 +2,6 @@ import Library from '../models/Library.js'; // Asegúrate que el nombre del arch
 
 export const createLibrary = async (req, res) => {
   try {
-    // req.body contiene lo que envía el formulario (name, location, etc)
     const newLibrary = await Library.create(req.body);
     res.status(201).json(newLibrary);
   } catch (error) {
@@ -10,7 +9,6 @@ export const createLibrary = async (req, res) => {
   }
 };
 
-// De paso, añadimos la función para verlas (te hará falta pronto)
 export const getLibraries = async (req, res) => {
   try {
     const libraries = await Library.find();

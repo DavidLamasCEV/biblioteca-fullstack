@@ -1,16 +1,33 @@
 import User from '../models/User.js';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export const register = async (req, res) => {
+  console.log('Register called with:', req.body);
   try {
     const { email, password, name } = req.body;
     
+    console.log('Checking for existing user...');
     const existingUser = await User.findOne({ email });
+    console.log('Existing user:', existingUser);
     if (existingUser) return res.status(400).json({ message: "El usuario ya existe" });
 
+    console.log('Creating user...');
     const user = await User.create({ email, password, name });
+    console.log('User created:', user);
     res.status(201).json({ id: user._id, email: user.email }); // No devolvemos password
   } catch (error) {
+    console.error('Error in register:', error);
+    if (error.name === 'ValidationError') {
+      const errors = {};
+      for (let field in error.errors) {
+        errors[field] = { message: error.errors[field].message };
+      }
+      return res.status(400).json({ errors });
+    }
+    if (error.code === 11000) { // Duplicate key error
+      return res.status(400).json({ message: "El usuario ya existe" });
+    }
     res.status(500).json({ message: error.message });
   }
 };
@@ -34,7 +51,11 @@ export const login = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "ID de usuario inválido" });
+        }
+        const user = await User.findById(id);
         if(!user) return res.status(404).json({message: "Usuario no encontrado"});
         res.json(user);
     } catch (error) {
