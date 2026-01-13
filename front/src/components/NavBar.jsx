@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import ThemeContext from '../contents/themeContext';
 
 const NavBar = () => {
+
+  const { theme, handleChangeTheme } = useContext(ThemeContext);
+
   return (
     <div>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary text-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">Navbar</a>
+          <a className="navbar-brand text-light" href="#">Navbar</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -27,6 +31,11 @@ const NavBar = () => {
               <li className="nav-item">
                 <Link to="/add-library" className="nav-link active" aria-current="page" href="#">Add Library</Link>
               </li>
+              <div>
+                <button id="switch-theme" onClick={handleChangeTheme}>
+                  Change to: {theme === 'Light' ? ' Dark ' : ' Light '} Theme
+                  </button>
+                </div>
             </ul>
           </div>
         </div>

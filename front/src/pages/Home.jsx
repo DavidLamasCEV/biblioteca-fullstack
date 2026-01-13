@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import BookCard from '../components/BookCard'
 import './Home.css'
 import { deleteBook, getBooks } from '../services/books.service'
 
+import ThemeContext from '../contents/themeContext';
+
 const Home = () => {
   const [books, setBooks] = useState([])
+  const contextValue = useContext(ThemeContext)
 
   useEffect(() => {
     getBooks()

@@ -8,10 +8,14 @@ import BookDetail from './pages/BookDetail';
 import BookEdit from './pages/BookEdit';
 import LibraryForm from './pages/LibraryForm';
 import LibraryList from './pages/LibraryList';
+import ThemeContext from './contents/themeContext';
+import { useContext } from 'react';
 
 function App() {
+
+  const { theme } = useContext(ThemeContext);
   return (
-    <>
+    <div className={`app-wrapper ${theme}`}>
       <NavBar />
       <div className="container mt-4">
         <Routes>
@@ -26,7 +30,7 @@ function App() {
           <Route path="/libraries" element={<LibraryList />} />
         </Routes>
       </div>
-    </>
+    </div>
   );
 }
 

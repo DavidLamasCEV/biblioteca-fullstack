@@ -1,5 +1,5 @@
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: sans-serif;
@@ -29,4 +29,36 @@ h1 {
 .book-card:hover {
   transform: translateY(-5px);
   border-color: #646cff;
+}
+
+/* 1. Configuración del contenedor principal para que ocupe toda la pantalla */
+.app-wrapper {
+  min-height: 100vh; /* Obliga a que el fondo cubra el 100% de la altura */
+  width: 100%;
+  transition: all 0.3s ease; /* Suaviza el cambio de color */
+}
+
+/* 2. Estilos para el Tema CLARO (Light) */
+.app-wrapper.Light {
+  background-color: #f5f7fa; /* O blanco #ffffff */
+  color: #213547;
+}
+
+/* 3. Estilos para el Tema OSCURO (Dark) */
+.app-wrapper.Dark {
+  background-color: #242424;
+  color: #ffffff;
+}
+
+/* 4. ¡IMPORTANTE! Adaptar las tarjetas (BookCards) al modo oscuro */
+/* Como tus tarjetas tienen background: #fff fijo, hay que cambiarlo en modo Dark */
+
+.app-wrapper.Dark .book-card {
+  background-color: #333; /* Fondo gris oscuro para la tarjeta */
+  color: #fff;            /* Texto blanco */
+  border-color: #555;     /* Borde más sutil */
+}
+
+.app-wrapper.Dark h1 {
+  color: #fff; /* Que el título H1 también se vuelva blanco */
 }
