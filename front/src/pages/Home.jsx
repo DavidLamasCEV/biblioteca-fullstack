@@ -38,6 +38,12 @@ const Home = () => {
         <p>Descubre nuestra colección de libros</p>
       </header>
 
+      <div className="text-center mb-4">
+        <Link to="/add-book" className="btn btn-primary btn-lg">
+          + Añadir Nuevo Libro
+        </Link>
+      </div>
+
       <div className="books-grid">
         {books.map((book) => (
           <BookCard

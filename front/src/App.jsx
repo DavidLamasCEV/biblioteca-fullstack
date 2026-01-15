@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import BookDetail from './pages/BookDetail';
+import BookForm from './pages/BookForm';
 import BookEdit from './pages/BookEdit';
 import LibraryForm from './pages/LibraryForm';
 import LibraryList from './pages/LibraryList';
@@ -26,6 +27,7 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/books/:id" element={<BookDetail />} />
           <Route path="/books/:id/edit" element={<BookEdit />} />
+          <Route path="/add-book" element={<BookForm />} />
           <Route path="/add-library" element={<LibraryForm />} />
           <Route path="/libraries" element={<LibraryList />} />
         </Routes>
