@@ -1,16 +1,19 @@
 import apiClient from "./baseService";
 
-// Registro: POST /api/users/register
 export const registerUser = (userData) => {
-  return apiClient.post("/users/register", userData);
+  return apiClient.post("/register", userData);
 };
 
-// Login: POST /api/users/login
 export const loginUser = (userData) => {
-  return apiClient.post("/users/login", userData);
+  return apiClient.post("/login", userData);
 };
 
-// Perfil: GET /api/users/:id   <-- ESTA ES LA QUE TE FALTABA
-export const getUserProfile = (id) => {
-  return apiClient.get(`/users/${id}`);
+// Ahora getUserProfile usa el token para obtener el perfil del usuario autenticado
+export const getUserProfile = () => {
+  return apiClient.get("/profile");
+};
+
+// Mantener función legacy para obtener usuario por ID si es necesario
+export const getUserById = (userId) => {
+  return apiClient.get(`/users/${userId}`);
 };

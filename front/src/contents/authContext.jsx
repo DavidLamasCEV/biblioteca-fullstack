@@ -1,39 +1,68 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
+import { getUserProfile } from '../services/userService';
+import { getToken, setToken, removeToken, isAuthenticated as checkAuthStatus } from '../utils/auth';
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    // LEER: Intentamos leer y convertir el texto a objeto JSON
-    const storedUser = window.localStorage.getItem('user_session');
-    let initialUser = null;
+  // Función para logout
+  const handleLogout = useCallback(() => {
+    removeToken();
+    setUser(null);
+  }, [])
 
-    try {
-        initialUser = storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-        // Por si alguien manipula el localStorage manualmente y lo rompe
-        initialUser = null; 
-        window.localStorage.removeItem('user_session');
+  // Función legacy para mantener compatibilidad (pero ahora espera token)
+  const handleSetUser = useCallback((authData) => {
+    // 1. Guardamos el token en localStorage
+    if (authData.token) {
+      setToken(authData.token);
     }
-
-    const [user, setUser] = useState(initialUser);
-
-    const handleSetUser = (loggedUser) => {
-        setUser(loggedUser);
-        // GUARDAR: Convertimos el objeto a texto
-        window.localStorage.setItem('user_session', JSON.stringify(loggedUser));
-    };
     
-    const handleLogoutUser = () => {
-        setUser(null);
-        window.localStorage.removeItem('user_session');
-    };
+    // 2. IMPORTANTE: Actualizamos el estado de React inmediatamente
+    // (Esta es la línea que te faltaba para que la app sepa quién eres sin recargar)
+    if (authData.user) {
+      setUser(authData.user); 
+    }
+  }, [])
 
-    return (
-        <AuthContext.Provider value={{ user, handleSetUser, handleLogoutUser }}>
-            {children}
-        </AuthContext.Provider>
-    );  
+  // Verificar si hay token al cargar la aplicación
+  useEffect(() => {
+    const token = getToken();
+
+    if (token && checkAuthStatus()) {
+      getUserProfile()
+        .then((profileData) => {
+          setUser(profileData);
+        })
+        .catch((error) => {
+          console.error('Error fetching profile data:', error);
+          removeToken();
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      console.log('hola no hay token o está expirado')
+      setLoading(false);
+      removeToken();
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{
+      user,
+      handleSetUser,
+      handleLogout,
+      isAuthenticated: checkAuthStatus(),
+      loading
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

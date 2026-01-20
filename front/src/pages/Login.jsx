@@ -27,7 +27,7 @@ const Login = () => {
       .then((user) => {
         setError(null);
         handleSetUser(user);
-        navigate(`/profile/${user.id}`);
+        navigate(`/profile/${user._id}`)
       })
       .catch(err =>
         setError(err?.response?.data?.message || "Email o contraseña inválidos")

@@ -1,6 +1,6 @@
-import Library from '../models/Library.js'; // Asegúrate que el nombre del archivo coincida
+const Library = require('../models/Library.model');
 
-export const createLibrary = async (req, res) => {
+module.exports.createLibrary = async (req, res) => {
   try {
     const newLibrary = await Library.create(req.body);
     res.status(201).json(newLibrary);
@@ -9,7 +9,7 @@ export const createLibrary = async (req, res) => {
   }
 };
 
-export const getLibraries = async (req, res) => {
+module.exports.getLibraries = async (req, res) => {
   try {
     const libraries = await Library.find();
     res.json(libraries);

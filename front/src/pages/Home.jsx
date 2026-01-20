@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import BookCard from '../components/BookCard'
 import './Home.css'
 import { deleteBook, getBooks } from '../services/books.service'
+import { Link } from 'react-router-dom';
 
 import ThemeContext from '../contents/themeContext';
 

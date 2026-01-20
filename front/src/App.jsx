@@ -11,6 +11,8 @@ import LibraryForm from './pages/LibraryForm';
 import LibraryList from './pages/LibraryList';
 import ThemeContext from './contents/themeContext';
 import { useContext } from 'react';
+import ProtectedRoute from './components/ProtectedRoute'
+
 
 function App() {
 
@@ -24,7 +26,11 @@ function App() {
           <Route path="/books" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/:id" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
           <Route path="/books/:id" element={<BookDetail />} />
           <Route path="/books/:id/edit" element={<BookEdit />} />
           <Route path="/add-book" element={<BookForm />} />

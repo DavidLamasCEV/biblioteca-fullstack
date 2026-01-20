@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBook } from '../services/books.service';
-import { getLibraries } from '../services/library.service'; // Necesitamos esto para el select
+import { getLibraries } from '../services/libraryService'; // Necesitamos esto para el select
 import AuthContext from '../contents/authContext'; // Para saber quién eres
 
 const BookForm = () => {
